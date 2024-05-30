@@ -1,5 +1,5 @@
 import Joi from 'joi';
-import { MESSAGES } from '../../constants/message.constant';
+import { MESSAGES } from '../../constants/message.constant.js';
 
 const schema = Joi.object({
     email: Joi.string().email().required().message({
@@ -11,7 +11,6 @@ const schema = Joi.object({
         'string.min': MESSAGES.AUTH.COMMON.PASSWORD.MIN_LENGTH,
     }),
     passwordConfirm: Joi.string().required().valid(Joi.ref('password')).message({
-
         'any.required': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.REQUIRED,
         'any.only': MESSAGES.AUTH.COMMON.PASSWORD_CONFIRM.NOT_MATCHED_WITH_PASSWORD,
     }),

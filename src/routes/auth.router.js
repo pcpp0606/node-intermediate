@@ -1,8 +1,10 @@
 import express from 'express';
+import bcrypt from 'bcrypt';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { signUpValidator } from '../middlewares/validators/sign-up-validator.middleware.js';
 import { prisma } from '../utils/prisma.util.js';
+import { HASH_SALT_ROUNDS } from '../constants/auth.constant.js';
 
 const authRouter = express.Router();
 
@@ -20,10 +22,12 @@ authRouter.post('/sign-up', signUpValidator, async (req, res, next) => {
             });
         }
 
+        const hashedPassword = bcrypt.hashSync(password, HASH_SALT_ROUNDS);
+
         const data = await prisma.user.create({
             data: {
                 email,
-                password,
+                password: hashedPassword,
                 name,
             }
         });
