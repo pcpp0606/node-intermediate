@@ -1,11 +1,12 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import { HTTP_STATUS } from '../constants/http-status.constant.js';
 import { MESSAGES } from '../constants/message.constant.js';
 import { signUpValidator } from '../middlewares/validators/sign-up-validator.middleware.js';
 import { prisma } from '../utils/prisma.util.js';
-import { HASH_SALT_ROUNDS } from '../constants/auth.constant.js';
-import { preferences } from 'joi';
+import { ACCESS_TOKEN_EXPIRES_IN, HASH_SALT_ROUNDS } from '../constants/auth.constant.js';
+import { ACCESS_TOKEN_SECRET } from '../constants/env.constant.js';
 
 const authRouter = express.Router();
 
@@ -51,7 +52,7 @@ authRouter.post('/sign-in', async (req, res, next) => {
     try {
         const { email, password } = req.body;
 
-        const user = await prisma.user.findUnique({ where: email });
+        const user = await prisma.user.findUnique({ where: { email } });
 
         const isPasswordMatched = user && bcrypt.compareSync(password, user.password);
 
@@ -62,12 +63,14 @@ authRouter.post('/sign-in', async (req, res, next) => {
             });
         }
 
-        const data = null;
+        const payload = { id: user.id };
+
+        const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
 
         return res.status(HTTP_STATUS.OK).json({
             status: HTTP_STATUS.CREATED,
             message: MESSAGES.AUTH.SIGN_IN.SUCCEED,
-            data,
+            data: { accessToken },
         });
     } catch (error) {
         next(error);

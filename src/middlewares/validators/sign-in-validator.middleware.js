@@ -8,7 +8,6 @@ const schema = Joi.object({
     }),
     password: Joi.string().required().messages({
         'any.required': MESSAGES.AUTH.COMMON.PASSWORD.REQUIRED,
-        'string.min': MESSAGES.AUTH.COMMON.PASSWORD.MIN_LENGTH,
     }),
 });
 

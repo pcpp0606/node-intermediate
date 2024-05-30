@@ -7,8 +7,6 @@ import { apiRouter } from "./routes/index.js";
 
 const app = express();
 
-console.log('b');
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
