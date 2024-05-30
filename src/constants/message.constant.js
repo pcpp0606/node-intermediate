@@ -1,3 +1,5 @@
+import { MIN_PASSWORD_LENGTH } from "./auth.constant";
+
 export const MESSAGES = {
     AUTH: {
         COMMON: {
@@ -8,7 +10,7 @@ export const MESSAGES = {
             },
             PASSWORD: {
                 REQUIRED: '비밀번호를 입력해 주세요.',
-                MIN_LENGTH: '비밀번호는 6자리 이상이어야 합니다.'
+                MIN_LENGTH: `비밀번호는 ${MIN_PASSWORD_LENGTH}자리 이상이어야 합니다.`
             },
             PASSWORD_CONFIRM: {
                 REQUIRED: '비밀번호 확인을 입력해 주세요.',
@@ -17,9 +19,13 @@ export const MESSAGES = {
             NAME: {
                 REQUIRED: '이름을 입력해 주세요.',
             },
+            UNAUTHORIZED: '인증 정보가 유효하지 않습니다.',
         },
         SIGN_UP: {
             SUCCEED: '회원가입에 성공했습니다.',
-        }
+        },
+        SIGN_IN: {
+            SUCCEED: '로그인에 성공했습니다.',
+        },
     }
 }
